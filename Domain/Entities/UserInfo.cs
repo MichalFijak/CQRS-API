@@ -5,7 +5,6 @@ namespace Domain.Entities
     { 
         public int UserId { get; init; }
 
-
         public string Collegue { get; init; } = string.Empty;
 
         public string Department { get; init; } = string.Empty;

@@ -1,11 +1,12 @@
 ﻿
 using Domain.Entities;
+
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public sealed class UserRepository
+    public sealed class UserRepository : IUserRepository
     {
 
         private readonly AppDbContext context;
@@ -15,7 +16,7 @@ namespace Infrastructure.Repositories
             this.context = context;
         }
 
-        public async Task<User?> GetByIdAsync (int id, CancellationToken ct)
+        public async Task<User?> GetByIdAsync(int id, CancellationToken ct)
             => await context.Users.FirstOrDefaultAsync(u => u.UserId == id, ct);
 
         public async Task<IEnumerable<User>> GetAllAsync(CancellationToken ct)

@@ -13,12 +13,16 @@ namespace Application.UserQueries
     public sealed class GetUserByIdQuerryHandler : IRequestHandler<GetUserByIdQuerry, UserDto>
     {
 
-        public GetUserByIdQuerryHandler()
+        private readonly IUserRepository userRepository;
+        public GetUserByIdQuerryHandler(IUserRepository userRepository)
         {
+            this.userRepository = userRepository;
         }
 
         public Task<UserDto> Handle(GetUserByIdQuerry request, CancellationToken cancellationToken)
         {
+            userRepository.GetByIdAsync(request.Id, cancellationToken);
+            //mapper
             throw new NotImplementedException();
         }
     }
