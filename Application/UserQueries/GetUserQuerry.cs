@@ -1,5 +1,7 @@
 ﻿
 using Application.Dtos;
+using Application.Mappers;
+using Domain.Interfaces;
 using MediatR;
 
 namespace Application.UserQueries
@@ -8,7 +10,6 @@ namespace Application.UserQueries
     {
 
     }
-
 
     public sealed class GetUserByIdQuerryHandler : IRequestHandler<GetUserByIdQuerry, UserDto>
     {
@@ -19,11 +20,15 @@ namespace Application.UserQueries
             this.userRepository = userRepository;
         }
 
-        public Task<UserDto> Handle(GetUserByIdQuerry request, CancellationToken cancellationToken)
+        public async Task<UserDto> Handle(GetUserByIdQuerry request, CancellationToken cancellationToken)
         {
-            userRepository.GetByIdAsync(request.Id, cancellationToken);
-            //mapper
-            throw new NotImplementedException();
+            var user =await userRepository.GetByIdAsync(request.Id, cancellationToken);
+            if (user == null)
+            {
+                throw new Exception($"User with id {request.Id} not found");
+            }
+            var userDto = UserMapper.ToUserDto(user);
+            return userDto;
         }
     }
 

@@ -1,6 +1,6 @@
 ﻿
 using Domain.Entities;
-
+using Domain.Interfaces;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +15,8 @@ namespace Infrastructure.Repositories
         {
             this.context = context;
         }
+
+        public IQueryable<User> AsQueryable() => context.Users.AsQueryable();
 
         public async Task<User?> GetByIdAsync(int id, CancellationToken ct)
             => await context.Users.FirstOrDefaultAsync(u => u.UserId == id, ct);
