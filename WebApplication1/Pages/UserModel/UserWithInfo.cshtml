@@ -1,0 +1,29 @@
+﻿@page "{id:int}"
+@model Api.Pages.UserModel.UserWithInfoModel
+
+<h2>User</h2>
+
+@if (Model.User is null)
+{
+    <p>User not found.</p>
+}
+else
+{
+    <p><strong>ID:</strong> @Model.User.UserId</p>
+    <p><strong>Username:</strong> @Model.User.Username</p>
+}
+
+<hr />
+
+<h2>User Info</h2>
+
+@if (Model.UserInfo is null)
+{
+    <p>No additional info.</p>
+}
+else
+{
+    <p><strong>Department:</strong> @Model.UserInfo.Department</p>
+    <p><strong>Position:</strong> @Model.UserInfo.Position</p>
+    <p><strong>Colleague:</strong> @Model.UserInfo.Collegue</p>
+}

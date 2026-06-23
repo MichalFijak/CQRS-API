@@ -1,0 +1,17 @@
+﻿@page "{id:int}"
+@model Api.Pages.UserModel.UserModel
+
+<h2>User</h2>
+
+@if (Model.User is null)
+{
+    <p>User not found.</p>
+}
+else
+{
+    <p><strong>ID:</strong> @Model.User.UserId</p>
+    <p><strong>Username:</strong> @Model.User.Username</p>
+}
+
+<hr />
+

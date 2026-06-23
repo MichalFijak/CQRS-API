@@ -1,26 +1,26 @@
 ﻿using Application.UserQueries;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Endpoints.Users
+namespace Api.Endpoints.Users;
+
+public static class GetUser
 {
-    public static class GetUser
+    public static void Map(WebApplication app)
     {
-        public static void Map(WebApplication app)
-        {
-            app.MapGet("/api/users/{id}", HandleGetUser);
-            app.MapGet("/api/users/{id}/info", HandleGetUserWithInfo);
+        app.MapGet("/api/users/{id}", HandleGetUser);
+        app.MapGet("/api/users/{id}/info", HandleGetUserWithInfo);
 
-        }
+    }
 
-        public static async Task<IResult> HandleGetUser(int id, IMediator mediator)
-        {
-            var user = await mediator.Send(new GetUserByIdQuerry(id));
-            return user is null ? Results.NotFound() : Results.Ok(user);
-        }
-        public static async Task<IResult> HandleGetUserWithInfo(int id, IMediator mediator)
-        {
-            var user = await mediator.Send(new GetUserWithInfoQuerry(id));
-            return user is null ? Results.NotFound() : Results.Ok(user);
-        }
+    public static async Task<IResult> HandleGetUser(int id,[FromServices] IMediator mediator)
+    {
+        var user = await mediator.Send(new GetUserByIdQuerry(id));
+        return user is null ? Results.NotFound() : Results.Ok(user);
+    }
+    public static async Task<IResult> HandleGetUserWithInfo(int id, [FromServices] IMediator mediator)
+    {
+        var user = await mediator.Send(new GetUserWithInfoQuerry(id));
+        return user is null ? Results.NotFound() : Results.Ok(user);
     }
 }
