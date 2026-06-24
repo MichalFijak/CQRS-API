@@ -1,8 +1,11 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+
 namespace Domain.Entities
 {
     public class UserInfo
-    { 
+    {
+        [Key]
         public int UserId { get; init; }
 
         public string Collegue { get; init; } = string.Empty;

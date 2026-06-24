@@ -10,6 +10,6 @@ namespace Infrastructure.Persistence
         }
 
         public DbSet<User> Users { get; set; } = null!;
-        public DbSet<UserInfo> UserInfos { get; set; } = null!;
+        public DbSet<UserInfo> UsersInfo { get; set; } = null!;
     }
 }

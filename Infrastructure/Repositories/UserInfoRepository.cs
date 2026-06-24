@@ -15,26 +15,26 @@ namespace Infrastructure.Repositories
             this.context = context;
         }
 
-        public IQueryable<UserInfo> AsQueryable() => context.UserInfos.AsQueryable();
+        public IQueryable<UserInfo> AsQueryable() => context.UsersInfo.AsQueryable();
 
         public async Task<UserInfo?> GetByIdAsync(int id, CancellationToken ct)
-            => await context.UserInfos.FirstOrDefaultAsync(u => u.UserId == id, ct);
+            => await context.UsersInfo.FirstOrDefaultAsync(u => u.UserId == id, ct);
 
         public async Task AddAsync(UserInfo userInfo, CancellationToken ct)
         {
-            await context.UserInfos.AddAsync(userInfo, ct);
+            await context.UsersInfo.AddAsync(userInfo, ct);
             await context.SaveChangesAsync(ct);
         }
 
         public async Task UpdateAsync(UserInfo userInfo, CancellationToken ct)
         {
-            context.UserInfos.Update(userInfo);
+            context.UsersInfo.Update(userInfo);
             await context.SaveChangesAsync(ct);
         }
 
         public async Task DeleteAsync(UserInfo userInfo, CancellationToken ct)
         {
-            context.UserInfos.Remove(userInfo);
+            context.UsersInfo.Remove(userInfo);
             await context.SaveChangesAsync(ct);
         }
     }
