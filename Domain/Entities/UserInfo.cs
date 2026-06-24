@@ -14,6 +14,8 @@ namespace Domain.Entities
 
         public string Position { get; init; } = string.Empty;
 
+        public bool IsPromoted { get; init; } = false;
+
     }
 }
 
