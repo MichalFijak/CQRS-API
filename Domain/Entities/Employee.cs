@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entities
 {
-    public class User
+    public class Employee
     {
         [Key]
-        public int UserId { get; set; }
+        public int EmployeeId { get; set; }
 
         public string Username { get; set; } = string.Empty;
 

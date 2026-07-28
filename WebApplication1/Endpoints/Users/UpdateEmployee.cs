@@ -1,6 +1,6 @@
 ﻿namespace Api.Endpoints.Users
 {
-    public class DeleteUser
+    public class UpdateEmployee
     {
     }
 }

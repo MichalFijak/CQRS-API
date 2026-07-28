@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Api.Pages.UserModel
 {
-    public class UserModel : PageModel
+    public class EmployeeModel : PageModel
     {
         private readonly HttpClient _http;
 
-        public UserDto? User { get; private set; }
+        public EmployeeDto? Employee { get; private set; }
 
-        public UserModel(IHttpClientFactory httpClientFactory)
+        public EmployeeModel(IHttpClientFactory httpClientFactory)
         {
             _http = httpClientFactory.CreateClient("Api");
         }
@@ -18,9 +18,9 @@ namespace Api.Pages.UserModel
         public async Task<IActionResult> OnGet(int id)
         {
             // GET /api/users/{id}
-            var userResponse = await _http.GetAsync($"/api/users/{id}");
-            if (userResponse.IsSuccessStatusCode)
-                User = await userResponse.Content.ReadFromJsonAsync<UserDto>();
+            var employeeResponse = await _http.GetAsync($"/api/users/{id}");
+            if (employeeResponse.IsSuccessStatusCode)
+                Employee = await employeeResponse.Content.ReadFromJsonAsync<EmployeeDto>();
 
             return Page();
         }

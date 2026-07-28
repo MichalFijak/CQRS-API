@@ -5,30 +5,30 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.UserQueries
 {
-    public sealed record GetUserWithInfoQuerry(int Id) : IRequest<UserWithInfoDto>
+    public sealed record GetEmployeeWithInfoQuerry(int Id) : IRequest<EmployeeInfoDto>
     {
     }
 
-    public sealed class GetUserWithInfoQuerryHandler : IRequestHandler<GetUserWithInfoQuerry, UserWithInfoDto>
+    internal sealed class GetEmployeeWithInfoQuerryHandler : IRequestHandler<GetEmployeeWithInfoQuerry, EmployeeInfoDto>
     {
-        private readonly IUserInfoRepository userInfoRepository;
-        private readonly IUserRepository userRepository;
+        private readonly IEmployeeInfoRepository userInfoRepository;
+        private readonly IEmployeeRepository userRepository;
 
-        public GetUserWithInfoQuerryHandler(IUserInfoRepository userInfoRepository, IUserRepository userRepository)
+        public GetEmployeeWithInfoQuerryHandler(IEmployeeInfoRepository userInfoRepository, IEmployeeRepository userRepository)
         {
             this.userInfoRepository = userInfoRepository;
             this.userRepository = userRepository;
         }
-        public async Task<UserWithInfoDto> Handle(GetUserWithInfoQuerry request, CancellationToken cancellationToken)
+        public async Task<EmployeeInfoDto> Handle(GetEmployeeWithInfoQuerry request, CancellationToken cancellationToken)
         {
             var query =
                 from u in userRepository.AsQueryable()
                 join ui in userInfoRepository.AsQueryable()
-                    on u.UserId equals ui.UserId
-                where u.UserId == request.Id
-                select new UserWithInfoDto
+                    on u.EmployeeId equals ui.EmployeeId
+                where u.EmployeeId == request.Id
+                select new EmployeeInfoDto
                 {
-                    UserId = u.UserId,
+                    EmployeeId = u.EmployeeId,
                     Username = u.Username,
                     Collegue = ui.Collegue,
                     Department = ui.Department,

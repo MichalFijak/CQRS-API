@@ -1,9 +1,9 @@
 ﻿
 namespace Application.Dtos
 {
-    public sealed record UserDto
+    public sealed record EmployeeDto
     {
-        public int UserId { get; init; }
+        public int EmployeeId { get; init; }
 
         public string Username { get; init; } = string.Empty;
 

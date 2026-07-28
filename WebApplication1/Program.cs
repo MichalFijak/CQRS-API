@@ -6,23 +6,20 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddHttpClient("Api", client =>
 {
     client.BaseAddress = new Uri("https://localhost:7092");
 });
 
-// MediatR + Handlers
 builder.Services.AddMediatR(cfg =>
 {
-    cfg.RegisterServicesFromAssembly(typeof(GetUserByIdQuerry).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(GetEmployeeQuerry).Assembly);
 });
 
-// Repozytoria + DbContext (przykład)
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IUserInfoRepository, UserInfoRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IEmployeeInfoRepository, EmployeeInfoRepository>();
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -52,6 +49,6 @@ app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
 
-Api.Endpoints.Users.GetUser.Map(app);
+Api.Endpoints.Users.GetEmployee.Map(app);
 
 app.Run();

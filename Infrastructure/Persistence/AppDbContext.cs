@@ -9,14 +9,14 @@ namespace Infrastructure.Persistence
         {
         }
 
-        public DbSet<User> Users { get; set; } = null!;
-        public DbSet<UserInfo> UsersInfo { get; set; } = null!;
+        public DbSet<Employee> Employee { get; set; } = null!;
+        public DbSet<EmployeeInfo> EmployeeInfo { get; set; } = null!;
     
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().ToTable("Users");
-            modelBuilder.Entity<UserInfo>().ToTable("UsersInfo");
+            modelBuilder.Entity<Employee>().ToTable("Employee");
+            modelBuilder.Entity<EmployeeInfo>().ToTable("EmployeeInfo");
 
             base.OnModelCreating(modelBuilder);
         }
