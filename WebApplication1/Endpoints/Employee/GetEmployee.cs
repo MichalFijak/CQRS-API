@@ -1,15 +1,15 @@
-﻿using Application.UserQueries;
+﻿using Application.EmployeeQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Endpoints.Users;
+namespace Api.Endpoints.Employee;
 
 public static class GetEmployee
 {
     public static void Map(WebApplication app)
     {
-        app.MapGet("/api/users/{id}", HandleGetEmployee);
-        app.MapGet("/api/users/{id}/info", HandleGetEmployeeInfo);
+        app.MapGet("/api/employees/{id}", HandleGetEmployee);
+        app.MapGet("/api/employees/{id}/info", HandleGetEmployeeInfo);
 
     }
 

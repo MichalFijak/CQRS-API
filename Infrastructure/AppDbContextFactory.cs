@@ -14,12 +14,12 @@ namespace Infrastructure
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+            var conn = config.GetConnectionString("DefaultConnection");
 
-            optionsBuilder.UseSqlServer(
-                config.GetConnectionString("DefaultConnection"));
+            var builder = new DbContextOptionsBuilder<AppDbContext>();
+            builder.UseSqlServer(conn);
 
-            return new AppDbContext(optionsBuilder.Options);
+            return new AppDbContext(builder.Options);
         }
     }
 

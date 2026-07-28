@@ -4,7 +4,7 @@ using Application.Mappers;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.UserQueries
+namespace Application.EmployeeQueries
 {
     public sealed record GetEmployeeQuerry(int Id) : IRequest<EmployeeDto>
     {

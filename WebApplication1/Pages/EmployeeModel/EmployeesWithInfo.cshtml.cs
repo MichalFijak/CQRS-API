@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Api.Pages.UserModel
+namespace Api.Pages.EmployeeModel
 {
     public class EmployeeInfoModel : PageModel
     {
@@ -18,13 +18,13 @@ namespace Api.Pages.UserModel
 
         public async Task<IActionResult> OnGet(int id)
         {
-            // GET /api/users/{id}
-            var employeeResponse = await _http.GetAsync($"/api/users/{id}");
+            // GET /api/employees/{id}
+            var employeeResponse = await _http.GetAsync($"/api/employees/{id}");
             if (employeeResponse.IsSuccessStatusCode)
                 Employee = await employeeResponse.Content.ReadFromJsonAsync<EmployeeDto>();
 
-            // GET /api/users/{id}/info
-            var employeeInfoResponse = await _http.GetAsync($"/api/users/{id}/info");
+            // GET /api/employees/{id}/info
+            var employeeInfoResponse = await _http.GetAsync($"/api/employees/{id}/info");
             if (employeeInfoResponse.IsSuccessStatusCode)
                 EmployeeInfo = await employeeInfoResponse.Content.ReadFromJsonAsync<EmployeeInfoDto>();
 

@@ -1,4 +1,4 @@
-using Application.UserQueries;
+using Application.EmployeeQueries;
 using Domain.Interfaces;
 using Infrastructure.Persistence;
 using Infrastructure.Repositories;
@@ -49,6 +49,6 @@ app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
 
-Api.Endpoints.Users.GetEmployee.Map(app);
+Api.Endpoints.Employee.GetEmployee.Map(app);
 
 app.Run();
