@@ -9,9 +9,10 @@ namespace Infrastructure.Persistence
         {
         }
 
-        public DbSet<Employee> Employee { get; set; } = null!;
-        public DbSet<EmployeeInfo> EmployeeInfo { get; set; } = null!;
-    
+        public DbSet<Employee> Employees { get; set; } = null!;
+        public DbSet<EmployeeInfo> EmployeeInfos { get; set; } = null!;
+
+        public DbSet<User> Users { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

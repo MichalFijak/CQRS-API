@@ -3,7 +3,7 @@ using Domain.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.EmployeeQueries
+namespace Application.Queries.Employee
 {
     public sealed record GetEmployeeWithInfoQuerry(int Id) : IRequest<EmployeeInfoDto>
     {

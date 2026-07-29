@@ -1,10 +1,9 @@
-﻿
-using Application.Dtos;
+﻿using Application.Dtos;
 using Application.Mappers;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.EmployeeQueries
+namespace Application.Queries.Employee
 {
     public sealed record GetEmployeeQuerry(int Id) : IRequest<EmployeeDto>
     {
