@@ -1,3 +1,4 @@
+using Application.Commands.User;
 using Application.Queries.Employee;
 using Application.Services;
 using Domain.Interfaces;
@@ -18,7 +19,8 @@ builder.Services.AddHttpClient("Api", client =>
 
 builder.Services.AddMediatR(cfg =>
 {
-    cfg.RegisterServicesFromAssembly(typeof(GetEmployeeQuerry).Assembly);
+    cfg.RegisterServicesFromAssemblyContaining<GetEmployeeQuerry>();
+    cfg.RegisterServicesFromAssemblyContaining<RegisterUserCommand>();
 });
 
 builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>
@@ -71,5 +73,6 @@ app.MapRazorPages()
    .WithStaticAssets();
 
 Api.Endpoints.Employee.GetEmployee.Map(app);
-
+Api.Endpoints.Auth.Register.Map(app);
+//Api.Endpoints.Auth.Login.Map(app);
 app.Run();

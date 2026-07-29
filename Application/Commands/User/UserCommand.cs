@@ -1,7 +1,7 @@
 ﻿
 namespace Application.Commands.User
 {
-    public class RegisterUserCommand
+    public class UserCommand
     {
         public string Username { get; init; }
         public string Password { get; init; }
