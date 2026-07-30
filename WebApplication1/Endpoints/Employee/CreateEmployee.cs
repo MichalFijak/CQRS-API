@@ -1,4 +1,4 @@
-﻿namespace Api.Endpoints.Users
+﻿namespace Api.Endpoints.Employee
 {
     public class CreateEmployee
     {

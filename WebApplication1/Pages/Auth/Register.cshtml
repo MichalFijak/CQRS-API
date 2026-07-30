@@ -1,0 +1,15 @@
+﻿@page
+@model Api.Pages.Auth.RegisterModel
+
+<h2>Register</h2>
+
+<form method="post">
+    <input asp-for="Username" placeholder="Username" />
+    <input asp-for="Password" type="password" placeholder="Password" />
+    <button type="submit">Register</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <p style="color:red">@Model.Error</p>
+}
