@@ -34,10 +34,24 @@ namespace Api.Pages.Auth
             var json = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
             try
             {
-            var token = json["accesToken"];
-            var refreshToken = json["refreshToken"];
+                var accesToken = json["accesToken"];
+                var refreshToken = json["refreshToken"];
 
-            // TODO: store token in cookie/session
+                Response.Cookies.Append("accesToken", accesToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddMinutes(2)
+                });
+
+                Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddMinutes(4)
+                });
             }
             catch(Exception ex)
             {

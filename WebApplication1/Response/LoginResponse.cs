@@ -1,6 +1,4 @@
-﻿
-
-namespace Application.Dtos
+﻿namespace Api.Response
 {
     public record LoginResponse(
         string AccessToken,

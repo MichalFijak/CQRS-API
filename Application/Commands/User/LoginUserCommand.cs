@@ -8,11 +8,11 @@ using MediatR;
 namespace Application.Commands.User
 {
     public sealed record LoginUserCommand(string Username, string Password)
-        : IRequest<Result<LoginResponse>>
+        : IRequest<Result<LoginDto>>
     {
     }
 
-    internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<LoginResponse>>
+    internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<LoginDto>>
     {
         private readonly IUserRepository repo;
         private readonly IPasswordHasher hasher;
@@ -25,12 +25,12 @@ namespace Application.Commands.User
             this.tokens = tokens;
         }
 
-        public async Task<Result<LoginResponse>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<LoginDto>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var user =await repo.GetByUsernameAsync(request.Username);
 
-            if (user is null) return Result<LoginResponse>.Fail("Invalid Credential");
-            if (!hasher.Verify(request.Password, user.PasswordHash)) return Result<LoginResponse>.Fail("Invalid Credential");
+            if (user is null) return Result<LoginDto>.Fail("Invalid Credential");
+            if (!hasher.Verify(request.Password, user.PasswordHash)) return Result<LoginDto>.Fail("Invalid Credential");
 
             var accessToken = tokens.GenerateAccessToken(user);
 
@@ -39,7 +39,7 @@ namespace Application.Commands.User
 
             await repo.UpdateAsync(user);
 
-            return Result<LoginResponse>.Success(new LoginResponse(accessToken, refreshToken));
+            return Result<LoginDto>.Success(new LoginDto(accessToken, refreshToken));
 
         }
     }

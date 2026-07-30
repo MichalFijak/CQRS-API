@@ -35,7 +35,7 @@ namespace Infrastructure.Security
         {
             var randomBytes = RandomNumberGenerator.GetBytes(64);
             var token = Convert.ToBase64String(randomBytes);
-            var expiry = DateTime.UtcNow.AddMinutes(2);
+            var expiry = DateTime.UtcNow.AddMinutes(4);
             return (token, expiry);
         }
     }

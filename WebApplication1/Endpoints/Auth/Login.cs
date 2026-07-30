@@ -1,5 +1,5 @@
-﻿using Application.Commands.User;
-using Application.Dtos;
+﻿using Api.Response;
+using Application.Commands.User;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -21,7 +21,10 @@ namespace Api.Endpoints.Auth
             var result = await mediator.Send(cmd);
 
             return result.IsSuccess
-                ? TypedResults.Ok(result.Value)
+                ? TypedResults.Ok(new LoginResponse(
+                    result.Value.AccessToken,
+                    result.Value.RefreshToken
+                ))
                 : TypedResults.NotFound(result.Error);
         }
     }
