@@ -44,7 +44,7 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeInfoRepository, EmployeeInfoRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
-
+builder.Services.AddSingleton<ITokenService,TokenService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -74,5 +74,5 @@ app.MapRazorPages()
 
 Api.Endpoints.Employee.GetEmployee.Map(app);
 Api.Endpoints.Auth.Register.Map(app);
-//Api.Endpoints.Auth.Login.Map(app);
+Api.Endpoints.Auth.Login.Map(app);
 app.Run();

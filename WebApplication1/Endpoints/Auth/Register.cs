@@ -2,7 +2,7 @@
 
 using Application.Commands.User;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Api.Endpoints.Auth
 {
@@ -13,16 +13,16 @@ public static class Register
         app.MapPost("/auth/register", RegisterUser);
     }
 
-    private static async Task<IResult> RegisterUser(
-        RegisterUserCommand cmd,
-        [FromServices] IMediator mediator)
-    {
-        var result = await mediator.Send(cmd);
+        private static async Task<Results<Ok, BadRequest<string>>> RegisterUser(
+            RegisterUserCommand cmd,
+            IMediator mediator)
+        {
+            var result = await mediator.Send(cmd);
 
-        return result.IsSuccess
-            ? Results.Ok()
-            : Results.BadRequest(result.Error);
+            return result.IsSuccess
+                ? TypedResults.Ok()
+                : TypedResults.BadRequest(result.Error);
+        }
     }
-}
 
 }

@@ -24,5 +24,13 @@ namespace Infrastructure.Repositories
         {
             return await context.Users.FirstOrDefaultAsync(u => u.Username == username);
         }
+
+        public async Task UpdateAsync(User user)
+        {
+            var userToUpdate=await context.Users.FirstAsync(u => u.Id == user.Id);
+            context.Update(userToUpdate);
+            await context.SaveChangesAsync();
+
+        }
     }
 }

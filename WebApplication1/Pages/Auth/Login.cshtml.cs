@@ -27,14 +27,22 @@ namespace Api.Pages.Auth
 
             if (!response.IsSuccessStatusCode)
             {
-                Error = "Invalid credentials";
+                Error = response.StatusCode.ToString();
                 return Page();
             }
 
             var json = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
-            var token = json["token"];
+            try
+            {
+            var token = json["accesToken"];
+            var refreshToken = json["refreshToken"];
 
             // TODO: store token in cookie/session
+            }
+            catch(Exception ex)
+            {
+                Error = ex.Message;
+            }
 
             return RedirectToPage("/Index");
         }
