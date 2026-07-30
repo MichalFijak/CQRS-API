@@ -1,3 +1,5 @@
+using Api.Providers;
+using Api.State;
 using Application.Commands.User;
 using Application.Queries.Employee;
 using Application.Services;
@@ -5,6 +7,7 @@ using Domain.Interfaces;
 using Infrastructure.Persistence;
 using Infrastructure.Repositories;
 using Infrastructure.Security;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -45,6 +48,10 @@ builder.Services.AddScoped<IEmployeeInfoRepository, EmployeeInfoRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddSingleton<ITokenService,TokenService>();
+builder.Services.AddScoped<AuthenticationStateProvider, CookieAuthStateProvider>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IAuthStateService, AuthStateService>();
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

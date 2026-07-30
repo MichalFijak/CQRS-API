@@ -34,10 +34,10 @@ namespace Api.Pages.Auth
             var json = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
             try
             {
-                var accesToken = json["accesToken"];
+                var accessToken = json["accessToken"];
                 var refreshToken = json["refreshToken"];
 
-                Response.Cookies.Append("accesToken", accesToken, new CookieOptions
+                Response.Cookies.Append("accessToken", accessToken, new CookieOptions
                 {
                     HttpOnly = true,
                     Secure = true,
