@@ -9,7 +9,6 @@ using Infrastructure.Persistence;
 using Infrastructure.Repositories;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
@@ -52,8 +51,17 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddSingleton<ITokenService,TokenService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CookieAuthStateProvider>();
-builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IAuthStateService, AuthStateService>();
+builder.Services.AddTransient<AuthTokenHandler>();
+
+builder.Services.AddHttpContextAccessor();
+
+
+builder.Services.AddHttpClient("Api", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7092");
+})
+.AddHttpMessageHandler<AuthTokenHandler>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -64,6 +72,8 @@ builder.Services.AddRateLimiter(options =>
 {
     options.AddEmployeeRateLimiting();
 });
+
+
 
 var app = builder.Build();
 
@@ -87,7 +97,7 @@ app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
 
-Api.Endpoints.Employee.GetEmployee.Map(app);
+Api.Endpoints.Modules.EmployeesModule.Map(app);
 Api.Endpoints.Auth.Register.Map(app);
 Api.Endpoints.Auth.Login.Map(app);
 app.Run();

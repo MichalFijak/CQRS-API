@@ -1,4 +1,6 @@
-﻿namespace Api.Endpoints.Modules
+﻿using Api.Endpoints.Employee;
+
+namespace Api.Endpoints.Modules
 {
     public static class EmployeesModule
     {
@@ -9,11 +11,11 @@
                            .RequireAuthorization()
                            .RequireRateLimiting("employeePolicy");
 
-            GetEmployeesEndpoint.Map(group);
-            GetEmployeeEndpoint.Map(group);
-            GetEmployeeInfoEndpoint.Map(group);
-            AddEmployeeEndpoint.Map(group);
-            RemoveEmployeeEndpoint.Map(group);
+            GetEmployees.Map(group);
+            GetEmployee.Map(group);
+            CreateEmployee.Map(group);
+            DeleteEmployee.Map(group);
+            UpdateEmployee.Map(group);
         }
     }
 }

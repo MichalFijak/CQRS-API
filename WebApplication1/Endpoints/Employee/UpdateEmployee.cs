@@ -8,7 +8,7 @@ namespace Api.Endpoints.Employee
         public static void Map(IEndpointRouteBuilder group)
         {
 
-            group.MapGet("/{id:int}", HandleUpdateEmployee);
+            group.MapPut("/{id:int}", HandleUpdateEmployee);
 
         }
 

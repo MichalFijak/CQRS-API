@@ -6,11 +6,15 @@
 @if (Model.Employee is null)
 {
     <p>User not found.</p>
+    <p>@Model.Error</p>
 }
 else
 {
     <p><strong>ID:</strong> @Model.Employee?.EmployeeId</p>
     <p><strong>Username:</strong> @Model.Employee?.Username</p>
+    <p><strong>Email:</strong> @Model.Employee?.Email</p>
+    <p><strong>Salary:</strong> @Model.Employee?.Salary</p>
+
 }
 
 <hr />

@@ -1,5 +1,4 @@
-﻿using Application.Queries.Employee;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints.Employee
@@ -9,13 +8,13 @@ namespace Api.Endpoints.Employee
         public static void Map(IEndpointRouteBuilder group)
         {
 
-            group.MapGet("/{id:int}", HandleGetEmployees);
+            group.MapGet("", HandleGetEmployees);
 
         }
 
         public static async Task<IResult> HandleGetEmployees([FromServices] IMediator mediator)
         {
-
+            //var employess = mediator.Send(GetEmployeesQuerry);
             return Results.NotFound();
         }
     }

@@ -10,7 +10,7 @@ namespace Api.Endpoints.Employee
         public static void Map(IEndpointRouteBuilder group)
         {
 
-            group.MapGet("/{id:int}", HandleAddEmployee);
+            group.MapPost("/{id:int}", HandleAddEmployee);
 
         }
 

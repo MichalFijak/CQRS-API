@@ -9,7 +9,7 @@ namespace Api.Endpoints.Employee
         public static void Map(IEndpointRouteBuilder group)
         {
 
-            group.MapGet("/{id:int}", HandleRemoveEmoployee);
+            group.MapDelete("/{id:int}", HandleRemoveEmoployee);
 
         }
 
