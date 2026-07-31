@@ -6,10 +6,10 @@ namespace Api.Endpoints.Employee
 {
     public static class GetEmployee
     {
-        public static void Map(WebApplication app)
+        public static void Map(IEndpointRouteBuilder group)
         {
-            app.MapGet("/api/employees/{id}", HandleGetEmployee);
-            app.MapGet("/api/employees/{id}/info", HandleGetEmployeeInfo);
+
+            group.MapGet("/{id:int}", HandleGetEmployee);
 
         }
 
@@ -23,5 +23,7 @@ namespace Api.Endpoints.Employee
             var employee = await mediator.Send(new GetEmployeeWithInfoQuerry(id));
             return employee is null ? Results.NotFound() : Results.Ok(employee);
         }
+
+
     }
 }
