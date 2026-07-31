@@ -1,0 +1,71 @@
+﻿@page ""
+@model Api.Pages.Employees.EmployeesModel
+
+<h2>Employees</h2>
+
+@if (Model.Employees is null)
+{
+    <p>User not found.</p>
+    <p>@Model.Error</p>
+}
+else
+{
+
+    @foreach (var employee in Model.Employees)
+    {
+        <div class="employee-card">
+            <p><strong>ID:</strong> @employee.EmployeeId</p>
+            <p><strong>Username:</strong> @employee.Username</p>
+            <p><strong>Email:</strong> @employee.Email</p>
+            <p><strong>Salary:</strong> @employee.Salary</p>
+
+            <a asp-page="/Employees/Employee" asp-route-id="@employee.EmployeeId">View details</a>
+        </div>
+    }
+
+}
+
+<hr />
+
+<style>
+    .employee-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        border: 1px solid #e5e7eb;
+    }
+
+        .employee-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .employee-card p {
+            margin: 6px 0;
+            font-size: 15px;
+            color: #374151;
+        }
+
+        .employee-card strong {
+            color: #111827;
+        }
+
+        .employee-card a {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 8px 14px;
+            background: #2563eb;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.15s ease;
+        }
+
+            .employee-card a:hover {
+                background: #1e40af;
+            }
+</style>

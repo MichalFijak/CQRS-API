@@ -1,21 +1,21 @@
-﻿using Application.Dtos;
+﻿using Api.Response;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Api.Pages.EmployeeModel
+namespace Api.Pages.Employees
 {
-    public class EmployeeModel(IHttpClientFactory httpClientFactory) : PageModel
+    public class EmployeesModel(IHttpClientFactory httpClientFactory) : PageModel
     {
         private readonly HttpClient _http = httpClientFactory.CreateClient("Api");
 
-        public EmployeeDto? Employee { get; private set; }
+        public List<EmployeeResponse>? Employees { get; private set; }
         public string? Error { get; private set; }
 
-        public async Task<IActionResult> OnGet(int id)
+        public async Task<IActionResult> OnGet()
         {
-            var employeeResponse = await _http.GetAsync($"/api/employees/{id}");
+            var employeeResponse = await _http.GetAsync($"/api/employees");
             if (employeeResponse.IsSuccessStatusCode)
-                Employee = await employeeResponse.Content.ReadFromJsonAsync<EmployeeDto>();
+                Employees = await employeeResponse.Content.ReadFromJsonAsync<List<EmployeeResponse>>();
             else
             {
                 Error = employeeResponse.StatusCode.ToString();

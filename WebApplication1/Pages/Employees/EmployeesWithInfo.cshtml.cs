@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Api.Pages.EmployeeModel
+namespace Api.Pages.Employees
 {
     public class EmployeeInfoModel : PageModel
     {

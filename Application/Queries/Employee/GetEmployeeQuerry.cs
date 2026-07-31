@@ -10,15 +10,8 @@ namespace Application.Queries.Employee
 
     }
 
-    internal sealed class GetEmployeeQuerryHandler : IRequestHandler<GetEmployeeQuerry, EmployeeDto>
+    internal sealed class GetEmployeeQuerryHandler(IEmployeeRepository employeeRepository) : IRequestHandler<GetEmployeeQuerry, EmployeeDto>
     {
-
-        private readonly IEmployeeRepository employeeRepository;
-        public GetEmployeeQuerryHandler(IEmployeeRepository employeeRepository)
-        {
-            this.employeeRepository = employeeRepository;
-        }
-
         public async Task<EmployeeDto> Handle(GetEmployeeQuerry request, CancellationToken cancellationToken)
         {
             var employee = await employeeRepository.GetByIdAsync(request.Id, cancellationToken);

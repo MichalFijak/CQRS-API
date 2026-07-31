@@ -1,4 +1,8 @@
-﻿using MediatR;
+﻿using Api.Mappers;
+using Api.Response;
+using Application.Queries.Employee;
+using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints.Employee
@@ -12,10 +16,15 @@ namespace Api.Endpoints.Employee
 
         }
 
-        public static async Task<IResult> HandleGetEmployees([FromServices] IMediator mediator)
+        public static async Task<Results<Ok<List<EmployeeResponse>>, NotFound>> HandleGetEmployees([FromServices] IMediator mediator)
         {
-            //var employess = mediator.Send(GetEmployeesQuerry);
-            return Results.NotFound();
+            var employess =await mediator.Send(new GetEmployeesQuerry());
+            if (!employess.Any())
+                return TypedResults.NotFound();
+
+            var response = employess.Select(e => e.MapToResponse()).ToList();
+
+            return TypedResults.Ok(response);
         }
     }
 }
