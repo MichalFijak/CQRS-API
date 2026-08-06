@@ -2,15 +2,16 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Api.Pages.EmployeeModel
+namespace Api.Pages.Employees
 {
-    public class EmployeeModel : PageModel
+    public class EmployeeInfoModel : PageModel
     {
         private readonly HttpClient _http;
 
         public EmployeeDto? Employee { get; private set; }
+        public EmployeeInfoDto? EmployeeInfo { get; private set; }
 
-        public EmployeeModel(IHttpClientFactory httpClientFactory)
+        public EmployeeInfoModel(IHttpClientFactory httpClientFactory)
         {
             _http = httpClientFactory.CreateClient("Api");
         }
@@ -21,6 +22,11 @@ namespace Api.Pages.EmployeeModel
             var employeeResponse = await _http.GetAsync($"/api/employees/{id}");
             if (employeeResponse.IsSuccessStatusCode)
                 Employee = await employeeResponse.Content.ReadFromJsonAsync<EmployeeDto>();
+
+            // GET /api/employees/{id}/info
+            var employeeInfoResponse = await _http.GetAsync($"/api/employees/{id}/info");
+            if (employeeInfoResponse.IsSuccessStatusCode)
+                EmployeeInfo = await employeeInfoResponse.Content.ReadFromJsonAsync<EmployeeInfoDto>();
 
             return Page();
         }

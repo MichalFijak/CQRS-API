@@ -14,39 +14,68 @@ namespace Infrastructure.Persistence
 
         public DbSet<User> Users { get; set; } = null!;
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>().ToTable("Employee");
-            modelBuilder.Entity<EmployeeInfo>().ToTable("EmployeeInfo");
+modelBuilder.Entity<Employee>()
+    .HasOne(e => e.EmployeeInfo)
+    .WithOne(i => i.Employee)
+    .HasForeignKey<EmployeeInfo>(i => i.EmployeeId);
 
+            var firstNames = new[]
+            {
+        "James","John","Robert","Michael","William","David","Richard","Joseph","Thomas","Charles",
+        "Mary","Patricia","Jennifer","Linda","Elizabeth","Barbara","Susan","Jessica","Sarah","Karen"
+    };
 
-            modelBuilder.Entity<Employee>().HasData(
-                new Employee
-                {
-                    EmployeeId = 1,
-                    Username = "John",
-                    Salary = 5000,
-                    Email = "john@example.com"
-                },
-                new Employee
-                {
-                    EmployeeId = 2,
-                    Username = "Anna",
-                    Salary = 6200,
-                    Email = "anna@example.com"
-                }
-            );
+            var lastNames = new[]
+            {
+        "Smith","Johnson","Williams","Brown","Jones","Garcia","Miller","Davis","Rodriguez","Martinez",
+        "Hernandez","Lopez","Gonzalez","Wilson","Anderson","Thomas","Taylor","Moore","Jackson","Martin"
+    };
 
-            modelBuilder.Entity<EmployeeInfo>().HasData(
-                new EmployeeInfo
+            var departments = new[]
+            {
+        "IT", "HR", "Finance", "Logistics", "Marketing"
+    };
+
+            var positions = new[]
+            {
+        "Junior Developer", "Mid Developer", "Senior Developer",
+        "Business Analyst", "HR Specialist", "Project Manager",
+        "Coordinator", "System Administrator", "UI/UX Designer", "Consultant"
+    };
+
+            var employees = new List<Employee>();
+            var infos = new List<EmployeeInfo>();
+
+            var rnd = new Random(456);
+
+            for (int i = 1; i <= 100; i++)
+            {
+                var first = firstNames[rnd.Next(firstNames.Length)];
+                var last = lastNames[rnd.Next(lastNames.Length)];
+
+                employees.Add(new Employee
                 {
-                    EmployeeId = 1,
-                    Collegue = "Mike",
-                    Department = "IT",
-                    Position = "Developer",
-                    IsPromoted = false
-                }
-            );
+                    EmployeeId = i,
+                    Username = $"{first} {last}",
+                    Salary = rnd.Next(3500, 12000),
+                    Email = $"{first.ToLower()}.{last.ToLower()}@example.com"
+                });
+
+                infos.Add(new EmployeeInfo
+                {
+                    EmployeeId = i,
+                    Collegue = $"{firstNames[rnd.Next(firstNames.Length)]} {lastNames[rnd.Next(lastNames.Length)]}",
+                    Department = departments[rnd.Next(departments.Length)],
+                    Position = positions[rnd.Next(positions.Length)],
+                    IsPromoted = rnd.Next(0, 2) == 1
+                });
+            }
+
+            modelBuilder.Entity<Employee>().HasData(employees);
+            modelBuilder.Entity<EmployeeInfo>().HasData(infos);
 
             base.OnModelCreating(modelBuilder);
         }

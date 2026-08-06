@@ -24,6 +24,7 @@ namespace Api.Endpoints.Auth
                 ? TypedResults.Ok(new LoginResponse(
                     result.Value.AccessToken,
                     result.Value.RefreshToken
+
                 ))
                 : TypedResults.NotFound(result.Error);
         }

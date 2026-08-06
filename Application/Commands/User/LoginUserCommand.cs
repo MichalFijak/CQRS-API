@@ -34,12 +34,12 @@ namespace Application.Commands.User
 
             var accessToken = tokens.GenerateAccessToken(user);
 
-            var (refreshToken, expiry) = tokens.GenerateRefreshToken();
-            user.SetRefreshToken(refreshToken, expiry);
+            var (RefreshToken, expiry) = tokens.GenerateRefreshToken();
+            user.SetRefreshToken(RefreshToken, expiry);
 
             await repo.UpdateAsync(user);
 
-            return Result<LoginDto>.Success(new LoginDto(accessToken, refreshToken));
+            return Result<LoginDto>.Success(new LoginDto(accessToken, RefreshToken));
 
         }
     }

@@ -1,3 +1,4 @@
+using Api.Config;
 using Api.Providers;
 using Api.State;
 using Application.Commands.User;
@@ -10,6 +11,7 @@ using Infrastructure.Security;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Scalar.AspNetCore;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,13 +51,28 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddSingleton<ITokenService,TokenService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CookieAuthStateProvider>();
-builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IAuthStateService, AuthStateService>();
+builder.Services.AddTransient<AuthTokenHandler>();
+
+builder.Services.AddHttpContextAccessor();
+
+
+builder.Services.AddHttpClient("Api", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7092");
+})
+.AddHttpMessageHandler<AuthTokenHandler>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddEmployeeRateLimiting();
+});
+
 
 
 var app = builder.Build();
@@ -64,6 +81,7 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
+    app.MapScalarApiReference();
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
@@ -79,7 +97,7 @@ app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
 
-Api.Endpoints.Employee.GetEmployee.Map(app);
+Api.Endpoints.Modules.EmployeesModule.Map(app);
 Api.Endpoints.Auth.Register.Map(app);
 Api.Endpoints.Auth.Login.Map(app);
 app.Run();

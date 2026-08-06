@@ -15,7 +15,7 @@ namespace Api.Providers
 
         public override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var token = contextAccessor.HttpContext.Request.Cookies["accesToken"];
+            var token = contextAccessor.HttpContext.Request.Cookies["accessToken"];
 
 
             if(string.IsNullOrEmpty(token))
