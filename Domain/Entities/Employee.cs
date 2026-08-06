@@ -13,5 +13,7 @@ namespace Domain.Entities
         public int Salary { get; set; }
 
         public string Email { get; set; } = string.Empty;
+
+        public EmployeeInfo? EmployeeInfo { get; set; }
     }
 }

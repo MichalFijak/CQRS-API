@@ -16,6 +16,8 @@ namespace Domain.Entities
 
         public bool IsPromoted { get; init; } = false;
 
+        public Employee? Employee { get; set; }
+
     }
 }
 
