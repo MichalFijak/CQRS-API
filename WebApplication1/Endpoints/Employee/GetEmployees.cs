@@ -1,5 +1,6 @@
 ﻿using Api.Mappers;
 using Api.Response;
+using Application.Common;
 using Application.Queries.Employee;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -12,19 +13,28 @@ namespace Api.Endpoints.Employee
         public static void Map(IEndpointRouteBuilder group)
         {
 
-            group.MapGet("", HandleGetEmployees);
+            group.MapGet("/", HandleGetEmployees);
 
         }
 
-        public static async Task<Results<Ok<List<EmployeeResponse>>, NotFound>> HandleGetEmployees([FromServices] IMediator mediator)
+        public static async Task<Results<Ok<PagedResponse<EmployeeResponse>>, NotFound>> HandleGetEmployees([AsParameters] EmployeeQueryFilter queryFilter,[FromServices] IMediator mediator)
         {
-            var employess =await mediator.Send(new GetEmployeesQuerry());
-            if (!employess.Any())
+            var result = await mediator.Send(new GetEmployeesQuerry(queryFilter));
+
+            if (!result.Data.Any())
                 return TypedResults.NotFound();
 
-            var response = employess.Select(e => e.MapToResponse()).ToList();
+            var mapped = result.Data
+                .Select(e => e.MapToResponse())
+                .ToList();
 
-            return TypedResults.Ok(response);
+            return TypedResults.Ok(new PagedResponse<EmployeeResponse>
+            {
+                Data = mapped,
+                PageNumber = result.PageNumber,
+                PageSize = result.PageSize,
+                TotalRecords = result.TotalRecords
+            });
         }
     }
 }

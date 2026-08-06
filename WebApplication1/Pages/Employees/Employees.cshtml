@@ -10,7 +10,6 @@
 }
 else
 {
-
     @foreach (var employee in Model.Employees)
     {
         <div class="employee-card">
@@ -21,9 +20,59 @@ else
         </div>
     }
 
-}
+    <hr />
 
-<hr />
+    <div class="pagination-container">
+
+        <div class="pagination-info">
+            <p>Page @Model.PageNumber of @Model.TotalPages</p>
+            <p>Total records: @Model.TotalRecords</p>
+        </div>
+
+        <div class="pagination-controls">
+
+            @if (Model.HasPreviousPage)
+            {
+                <a asp-page="/Employees/Index"
+                   asp-route-pageNumber="@(Model.PageNumber - 1)"
+                   asp-route-pageSize="@Model.PageSize"
+                   class="page-btn">Previous</a>
+            }
+
+            @if (Model.HasNextPage)
+            {
+                <a asp-page="/Employees/Index"
+                   asp-route-pageNumber="@(Model.PageNumber + 1)"
+                   asp-route-pageSize="@Model.PageSize"
+                   class="page-btn">Next</a>
+            }
+        </div>
+
+        <div class="pagination-size">
+            <form method="get">
+                <label>Page size:</label>
+                <select name="pageSize" onchange="this.form.submit()">
+                    <option value="5" selected="@(Model.PageSize == 5)">5</option>
+                    <option value="10" selected="@(Model.PageSize == 10)">10</option>
+                    <option value="20" selected="@(Model.PageSize == 20)">20</option>
+                    <option value="50" selected="@(Model.PageSize == 50)">50</option>
+                </select>
+
+                <input type="hidden" name="pageNumber" value="@Model.PageNumber" />
+            </form>
+        </div>
+
+        <div class="pagination-jump">
+            <form method="get">
+                <label>Go to page:</label>
+                <input type="number" name="pageNumber" min="1" max="@Model.TotalPages" value="@Model.PageNumber" />
+                <input type="hidden" name="pageSize" value="@Model.PageSize" />
+                <button type="submit" class="page-btn">Go</button>
+            </form>
+        </div>
+
+    </div>
+}
 
 <style>
     .employee-card {
@@ -66,4 +115,55 @@ else
             .employee-card a:hover {
                 background: #1e40af;
             }
+
+    .pagination-container {
+        margin-top: 20px;
+        padding: 20px;
+        background: #f9fafb;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+    }
+
+    .pagination-info {
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: #374151;
+    }
+
+    .pagination-controls {
+        margin-bottom: 15px;
+    }
+
+    .page-btn {
+        display: inline-block;
+        padding: 8px 14px;
+        background: #2563eb;
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 14px;
+        margin-right: 10px;
+        transition: background 0.15s ease;
+    }
+
+        .page-btn:hover {
+            background: #1e40af;
+        }
+
+    .pagination-size,
+    .pagination-jump {
+        margin-top: 10px;
+    }
+
+    select, input[type="number"] {
+        padding: 6px;
+        border-radius: 6px;
+        border: 1px solid #d1d5db;
+        margin-left: 8px;
+    }
+
+    button.page-btn {
+        border: none;
+        cursor: pointer;
+    }
 </style>

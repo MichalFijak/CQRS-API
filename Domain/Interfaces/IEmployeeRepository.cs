@@ -6,6 +6,8 @@ namespace Domain.Interfaces
     {
         IQueryable<Employee> AsQueryable();
 
+        IQueryable<Employee> GetEmployeeQuery();
+
         Task AddAsync(Employee user, CancellationToken ct);
         Task DeleteAsync(Employee user, CancellationToken ct);
         Task<IEnumerable<Employee>> GetAllAsync(CancellationToken ct);

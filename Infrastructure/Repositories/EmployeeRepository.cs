@@ -18,6 +18,10 @@ namespace Infrastructure.Repositories
 
         public IQueryable<Employee> AsQueryable() => context.Employees.AsQueryable();
 
+        public IQueryable<Employee> GetEmployeeQuery()
+        {
+            return context.Employees; 
+        }
         public async Task<Employee?> GetByIdAsync(int id, CancellationToken ct)
             => await context.Employees.FirstOrDefaultAsync(u => u.EmployeeId == id, ct);
 
