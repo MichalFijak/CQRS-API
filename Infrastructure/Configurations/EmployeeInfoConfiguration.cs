@@ -11,6 +11,8 @@ namespace Infrastructure.Configurations
         {
 
             builder.HasKey(e => e.EmployeeId);
+            builder.HasQueryFilter("SoftDelete", e => !e.IsDeleted);
+            builder.HasIndex(e=> new { e.IsDeleted });
 
         }
     }

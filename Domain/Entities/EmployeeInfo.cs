@@ -21,8 +21,7 @@ namespace Domain.Entities
         public DateTime? DeletedAt { get; set; } = null;
 
         public Employee? Employee { get; set; }
-
-
+        public string? DeletedBy { get; set; }
     }
 }
 

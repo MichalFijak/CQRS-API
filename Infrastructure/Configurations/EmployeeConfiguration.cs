@@ -10,7 +10,6 @@ namespace Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
             builder.ToTable("Employee");
-
             builder.HasOne(e => e.EmployeeInfo)
                    .WithOne(i => i.Employee)
                    .HasForeignKey<EmployeeInfo>(i => i.EmployeeId);

@@ -22,7 +22,6 @@ namespace Infrastructure.Persistence
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
-            SoftDeleteConfiguration.Apply(modelBuilder);
             EmployeeSeed.Apply(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
