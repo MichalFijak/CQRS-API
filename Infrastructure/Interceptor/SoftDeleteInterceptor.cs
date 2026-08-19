@@ -29,5 +29,34 @@ namespace Infrastructure.Interceptor
 
             return ValueTask.FromResult(result);
         }
+
+
+        public static void CascadeSoftDelete(DbContext dbContext, ISoftDelete parentEntity)
+        {
+            var parentEntry = dbContext.Entry(parentEntity);
+
+            foreach(var navigation in parentEntry.Navigations)
+            {
+                if (navigation.CurrentValue is null) continue;
+                if (navigation.CurrentValue is IEnumerable<ISoftDelete> children)
+                {
+                    foreach (var child in children)
+                    {
+                        if (!child.IsDeleted)
+                        {
+                            child.IsDeleted = true;
+                            child.DeletedAt = DateTime.UtcNow;
+                            CascadeSoftDelete(dbContext, child);
+                        }
+                    }
+                }
+                else if (navigation.CurrentValue is ISoftDelete child && !child.IsDeleted)
+                {
+                    child.IsDeleted = true;
+                    child.DeletedAt = DateTime.UtcNow;
+                    dbContext.Entry(child).State = EntityState.Modified;
+                }
+            }
+        }
     }
 }
