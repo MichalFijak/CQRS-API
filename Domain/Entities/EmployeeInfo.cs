@@ -1,9 +1,10 @@
 ﻿
+using Domain.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entities
 {
-    public class EmployeeInfo
+    public class EmployeeInfo:ISoftDelete
     {
         [Key]
         public int EmployeeId { get; init; }
@@ -16,8 +17,11 @@ namespace Domain.Entities
 
         public bool IsPromoted { get; init; } = false;
 
-        public Employee? Employee { get; set; }
+        public bool IsDeleted { get; set; } = false;
+        public DateTime? DeletedAt { get; set; } = null;
 
+        public Employee? Employee { get; set; }
+        public string? DeletedBy { get; set; }
     }
 }
 

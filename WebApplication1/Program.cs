@@ -5,6 +5,7 @@ using Application.Commands.User;
 using Application.Queries.Employee;
 using Application.Services;
 using Domain.Interfaces;
+using Infrastructure.Interceptor;
 using Infrastructure.Persistence;
 using Infrastructure.Repositories;
 using Infrastructure.Security;
@@ -53,7 +54,7 @@ builder.Services.AddSingleton<ITokenService,TokenService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CookieAuthStateProvider>();
 builder.Services.AddScoped<IAuthStateService, AuthStateService>();
 builder.Services.AddTransient<AuthTokenHandler>();
-
+builder.Services.AddSingleton<SoftDeleteInterceptor>();
 builder.Services.AddHttpContextAccessor();
 
 
@@ -63,9 +64,10 @@ builder.Services.AddHttpClient("Api", client =>
 })
 .AddHttpMessageHandler<AuthTokenHandler>();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>((sp,options) =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.AddInterceptors(sp.GetRequiredService<SoftDeleteInterceptor>());
 });
 
 builder.Services.AddRateLimiter(options =>
