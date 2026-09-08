@@ -30,7 +30,7 @@ namespace Infrastructure.Repositories
         public async Task<Employee?> GetByIdAsync(int id, CancellationToken ct)
             => await context.Employees.FirstOrDefaultAsync(u => u.EmployeeId == id, ct);
 
-        public  IQueryable<Employee> GetAllAsync()
+        public  IQueryable<Employee> QueryAll()
             => context.Employees.IgnoreQueryFilters(["SoftDelete"]);
 
         public async Task AddAsync(Employee employee, CancellationToken ct)

@@ -13,28 +13,20 @@ namespace Api.Endpoints.Employee
         public static void Map(IEndpointRouteBuilder group)
         {
 
-            group.MapGet("/bin", HandleGetDeletedEmployee);
+            group.MapGet("/deleted", HandleGetDeletedEmployee);
 
         }
 
-        public static async Task<Results<Ok<PagedResponse<EmployeeResponse>>, NotFound>> HandleGetDeletedEmployee([AsParameters] EmployeeQueryFilter queryFilter, [FromServices] IMediator mediator)
+        public static async Task<Results<Ok<List<EmployeeResponse>>, NotFound>> HandleGetDeletedEmployee([FromServices] IMediator mediator)
         {
-            var result = await mediator.Send(new GetDeletedEmployeesQuerry(queryFilter));
+            var result = await mediator.Send(new GetDeletedEmployeesQuerry());
 
-            if (!result.Data.Any())
+            if (result==null)
                 return TypedResults.NotFound();
 
-            var mapped = result.Data
-                .Select(e => e.MapToResponse())
-                .ToList();
+            var mapped = result.Select(e => e.MapToResponse()).ToList();
 
-            return TypedResults.Ok(new PagedResponse<EmployeeResponse>
-            {
-                Data = mapped,
-                PageNumber = result.PageNumber,
-                PageSize = result.PageSize,
-                TotalRecords = result.TotalRecords
-            });
+            return TypedResults.Ok(mapped);
         }
     }
 }

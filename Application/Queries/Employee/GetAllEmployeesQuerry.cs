@@ -19,7 +19,7 @@ namespace Application.Queries.Employee
 
                 var filters = request.queryFilter;
 
-                var query = employeeRepository.GetAllAsync();
+                var query = employeeRepository.QueryAll();
 
                 if (!string.IsNullOrEmpty(filters.Search))
                 {

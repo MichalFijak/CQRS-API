@@ -90,16 +90,16 @@ if (!app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
-
 app.UseRouting();
-
 app.UseAuthorization();
-
-app.MapStaticAssets();
-app.MapRazorPages()
-   .WithStaticAssets();
 
 Api.Endpoints.Modules.EmployeesModule.Map(app);
 Api.Endpoints.Auth.Register.Map(app);
 Api.Endpoints.Auth.Login.Map(app);
+
+app.MapStaticAssets();
+
+app.MapRazorPages()
+   .WithStaticAssets();
+
 app.Run();

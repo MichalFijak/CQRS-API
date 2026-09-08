@@ -7,7 +7,7 @@ namespace Domain.Interfaces
         IQueryable<Employee> AsQueryable();
         IQueryable<Employee> GetEmployeeQuery();
         IQueryable<Employee> GetDeletedEmployeeQuery();
-        IQueryable<Employee> GetAllAsync();
+        IQueryable<Employee> QueryAll();
 
         Task AddAsync(Employee user, CancellationToken ct);
         Task DeleteAsync(Employee user, CancellationToken ct);

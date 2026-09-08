@@ -18,6 +18,7 @@ namespace Api.Endpoints.Modules
             UpdateEmployee.Map(group);
             GetDeletedEmployee.Map(group);
             GetAllEmployees.Map(group);
+            RestoreEmployee.Map(group);
         }
     }
 }

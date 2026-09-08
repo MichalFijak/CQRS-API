@@ -1,0 +1,70 @@
+﻿@page "/Manager/Dashboard"
+@model Api.Pages.Manager.DashboardModel
+
+<h2>Manager</h2>
+<form method="get" asp-page-handler="Deleted">
+    <input type="hidden" name="handler" value="Deleted" />
+    <button type="submit">Pobierz usuniętych</button>
+</form>
+
+<form method="get" asp-page-handler="All">
+    <input type="hidden" name="handler" value="All" />
+    <button type="submit">Pobierz wszystkich</button>
+</form>
+
+
+<h3>Aktywni pracownicy</h3>
+@if (Model.ActiveEmployees is not null)
+{
+    <ul>
+        @foreach (var emp in Model.ActiveEmployees)
+        {
+            <li>@emp.EmployeeId - @emp.Username</li>
+        }
+    </ul>
+}
+
+<h3>Usunięci pracownicy</h3>
+@if (Model.DeletedEmployees is not null)
+{
+    <ul>
+        @foreach (var emp in Model.DeletedEmployees)
+        {
+            <li>
+                @emp.EmployeeId - @emp.Username
+            </li>
+
+            <!-- Restore -->
+            <form method="post" asp-page-handler="Restore">
+                <input type="hidden" name="employeeId" value="@emp.EmployeeId" />
+                <button type="submit">Przywróć</button>
+            </form>
+
+            <!-- Update -->
+            <form method="post" asp-page-handler="Update">
+                <input type="hidden" name="employeeId" value="@emp.EmployeeId" />
+
+                <label>Username:</label>
+                <input type="text" name="Username" value="@emp.Username" />
+
+                <label>Email:</label>
+                <input type="email" name="Email" value="@emp.Email" />
+
+                <label>Salary:</label>
+                <input type="number" name="Salary" value="@emp.Salary" />
+
+                <button type="submit">Zaktualizuj</button>
+            </form>
+        }
+    </ul>
+}
+
+@if (Model.RestoredEmployee is not null)
+{
+    <p>Przywrócono: @Model.RestoredEmployee.Username</p>
+}
+
+@if (Model.Error is not null)
+{
+    <p style="color:red">@Model.Error</p>
+}
