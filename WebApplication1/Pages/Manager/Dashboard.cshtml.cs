@@ -1,4 +1,5 @@
 using Api.Response;
+using Application.Common;
 using Application.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -20,22 +21,48 @@ namespace Api.Pages.Manager
         public string Email { get; private set; } = string.Empty;
         public string Username { get; private set; } = string.Empty;
         public string Error { get; private set; } = string.Empty;
+
+        #region Paginantion prop
+        public int PageNumber { get; private set; }
+        public int PageSize { get; private set; }
+        public int TotalRecords { get; private set; }
+        public int TotalPages { get; private set; }
+        public bool HasNextPage { get; private set; }
+        public bool HasPreviousPage { get; private set; }
+        #endregion
+
+
         public void OnGet() { }
 
-        public async Task<IActionResult> OnGetAll()
+        public async Task<IActionResult> OnGetAll(int pageNumber = 1, int pageSize = 10)
         {
 
-            var employeeResponse = await _http.GetAsync("/api/employees/all");
-            if (employeeResponse.IsSuccessStatusCode)
-            {
-                ActiveEmployees = await employeeResponse.Content.ReadFromJsonAsync<List<EmployeeResponse>>();
-            }
-            else
+            var employeeResponse = await _http.GetAsync($"/api/employees/all?pageNumber={pageNumber}&pageSize={pageSize}");
+            if (!employeeResponse.IsSuccessStatusCode)
             {
                 Error = employeeResponse.StatusCode.ToString();
+                return Page();
             }
+
+            var paged = await employeeResponse.Content.ReadFromJsonAsync<PagedResponse<EmployeeResponse>>();
+
+            if (paged is null)
+            {
+                Error = "Invalid response";
+                return Page();
+            }
+
+            ActiveEmployees = paged.Data.ToList();
+            PageNumber = paged.PageNumber;
+            PageSize = paged.PageSize;
+            TotalRecords = paged.TotalRecords;
+            TotalPages = paged.TotalPages;
+            HasNextPage = paged.HasNextPage;
+            HasPreviousPage = paged.HasPreviousPage;
+
             return Page();
         }
+        
 
         public async Task<IActionResult> OnPostRestore(int employeeId)
         {
