@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Application.Commands.Employee;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints.Employee
@@ -17,7 +18,8 @@ namespace Api.Endpoints.Employee
 
         public static async Task<IResult> HandleRemoveEmoployee(int id, [FromServices] IMediator mediator)
         {
-            return Results.NotFound();
+            var result =await mediator.Send(new DeleteEmployeeCommand(id));
+            return result.IsSuccess ? Results.Ok() : Results.NotFound(result.Error);
         }
     }
 }
