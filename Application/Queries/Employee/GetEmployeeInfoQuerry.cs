@@ -11,38 +11,29 @@ namespace Application.Queries.Employee
 
     internal sealed class GetEmployeeWithInfoQuerryHandler : IRequestHandler<GetEmployeeWithInfoQuerry, EmployeeInfoDto>
     {
-        private readonly IEmployeeInfoRepository userInfoRepository;
-        private readonly IEmployeeRepository userRepository;
+        private readonly IEmployeeRepository employeeRepository;
 
-        public GetEmployeeWithInfoQuerryHandler(IEmployeeInfoRepository userInfoRepository, IEmployeeRepository userRepository)
+        public GetEmployeeWithInfoQuerryHandler(IEmployeeRepository employeeRepository)
         {
-            this.userInfoRepository = userInfoRepository;
-            this.userRepository = userRepository;
+            this.employeeRepository = employeeRepository;
         }
         public async Task<EmployeeInfoDto> Handle(GetEmployeeWithInfoQuerry request, CancellationToken cancellationToken)
         {
-            var query =
-                from u in userRepository.AsQueryable()
-                join ui in userInfoRepository.AsQueryable()
-                    on u.EmployeeId equals ui.EmployeeId
-                where u.EmployeeId == request.Id
-                select new EmployeeInfoDto
-                {
-                    EmployeeId = u.EmployeeId,
-                    Username = u.Username,
-                    Collegue = ui.Collegue,
-                    Department = ui.Department,
-                    Position = ui.Position
-                };
-            
-            var userInfo = await query.FirstOrDefaultAsync(cancellationToken);
+            var employee = await employeeRepository.AsQueryable()
+                .Include(e => e.EmployeeInfo)
+                .FirstOrDefaultAsync(e => e.EmployeeId == request.Id, cancellationToken);
 
-            if (userInfo is null)
-            {
+            if (employee?.EmployeeInfo is null)
                 throw new Exception("User not found");
-            }
 
-            return userInfo;
+            return new EmployeeInfoDto
+            {
+                EmployeeId = employee.EmployeeId,
+                Username = employee.Username,
+                Collegue = employee.EmployeeInfo.Collegue,
+                Department = employee.EmployeeInfo.Department,
+                Position = employee.EmployeeInfo.Position
+            };
         }
     }
 }

@@ -23,6 +23,7 @@ namespace Infrastructure.Interceptor
                     continue;
                 }
                 entry.State = EntityState.Modified;
+                entry.Entity.DeletedBy= "System"; // You can set this to the current user or any other identifier
                 entry.Entity.IsDeleted = true;
                 entry.Entity.DeletedAt = DateTime.UtcNow;
             }

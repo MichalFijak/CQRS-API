@@ -17,6 +17,10 @@ else
             <p><strong>Username:</strong> @employee.Username</p>
 
             <a asp-page="/Employees/Employee" asp-route-id="@employee.EmployeeId">View details</a>
+
+            <form method="post" asp-page-handler="Remove" asp-route-id="@employee.EmployeeId">
+                <button type="submit">Usuń</button>
+            </form>
         </div>
     }
 

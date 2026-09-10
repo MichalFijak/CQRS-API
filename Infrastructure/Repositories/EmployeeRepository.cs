@@ -22,11 +22,16 @@ namespace Infrastructure.Repositories
         {
             return context.Employees; 
         }
+        public IQueryable<Employee> GetDeletedEmployeeQuery()
+        {
+            return context.Employees.IgnoreQueryFilters(["SoftDelete"]).Where(e => e.IsDeleted)
+                                    .OrderByDescending(e=>e.DeletedAt);
+        }
         public async Task<Employee?> GetByIdAsync(int id, CancellationToken ct)
             => await context.Employees.FirstOrDefaultAsync(u => u.EmployeeId == id, ct);
 
-        public async Task<IEnumerable<Employee>> GetAllAsync(CancellationToken ct)
-            => await context.Employees.ToListAsync(ct);
+        public  IQueryable<Employee> QueryAll()
+            => context.Employees.IgnoreQueryFilters(["SoftDelete"]);
 
         public async Task AddAsync(Employee employee, CancellationToken ct)
         {

@@ -46,5 +46,16 @@ namespace Api.Pages.Employees
 
             return Page();
         }
+
+        public async Task<IActionResult> OnPostRemove(int id)
+        {
+            var response = await _http.DeleteAsync($"/api/employees/{id}");
+            if (!response.IsSuccessStatusCode)
+            {
+                Error = response.StatusCode.ToString();
+                return Page();
+            }
+            return RedirectToPage("/Employees/Employees");
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Application.Commands.Employee;
+using Application.Dtos;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints.Employee
@@ -8,14 +10,18 @@ namespace Api.Endpoints.Employee
         public static void Map(IEndpointRouteBuilder group)
         {
 
-            group.MapPut("/{id:int}", HandleUpdateEmployee);
+            group.MapPut("/{employeeId:int}", HandleUpdateEmployee);
 
         }
 
 
-        public static async Task<IResult> HandleUpdateEmployee(int id, [FromServices] IMediator mediator)
+        public static async Task<IResult> HandleUpdateEmployee(int employeeId,[FromBody] EmployeeDto employee, [FromServices] IMediator mediator)
         {
-            return Results.NotFound();
+            var result = await mediator.Send(new UpdateEmployeeCommand(employeeId, employee));
+
+            return result.IsSuccess
+                ? TypedResults.Ok(new EmployeeDto())
+                : TypedResults.NotFound(result.Error);
         }
     }
 }

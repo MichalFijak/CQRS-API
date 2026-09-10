@@ -10,6 +10,7 @@ namespace Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
             builder.ToTable("Employee");
+            builder.HasIndex(e => new{ e.EmployeeId,e.IsDeleted});
 
             builder.HasOne(e => e.EmployeeInfo)
                    .WithOne(i => i.Employee)
